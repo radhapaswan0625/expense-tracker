@@ -6,21 +6,26 @@ def load_expenses():
             return json.load(file)
     except FileNotFoundError:
         return []
+    
+def get_valid_amount():
+    while True:
+        try:
+            amount = float(input("Enter expense amount: "))
+
+            if amount < 0:
+                print("Amount cannot be negative! ")
+                continue
+
+            return amount
+        
+        except ValueError:
+            print("please enter a valid number! ")    
 
 def add_expense():
     expense_name = input("Enter Expense name: ")
+
+    expense_amount = get_valid_amount()
     
-
-    while True:
-        try:
-            expense_amount = float(input("Enter expense amount: "))
-
-            if expense_amount < 0:
-                print("Amount cannot be negative! ")
-                continue
-            break
-        except ValueError:
-            print("Please enter a valid number!")
 
     category = input("Enter category (Food/Transport/Bills/etc): ")         
 
@@ -34,17 +39,20 @@ def add_expense():
 
     return expense
 
+
+
 def view_expenses(expenses):
     if not expenses:
         print("No expenses found.")
-    else:
-        print("\n Expense List:")
-        for expense in expenses:
-            print(                
-                f"{expense['name']} : "
-                f"{expense['amount']} : "
-                f"{expense.get('category', 'uncategorized')}"
-            )
+        return
+    print("\nExpense List")
+    print("-----------------------------------")
+    print(f"{'Name':<15}{'Amount':<10}{'Category'}")
+    print("-----------------------------------")
+
+    for expense in expenses:
+        print(f"{expense['name']:<15}{expense['amount']:<10}{expense['category']}")
+    
 
 def calculate_total(expenses):
     total =  0
@@ -105,7 +113,7 @@ def edit_expense(expenses):
 
     if expense:
         
-            new_amount = float(input("Enter new amount: "))
+            new_amount = get_valid_amount()
             expense["amount"] = new_amount
 
             save_expenses(expenses)
@@ -127,17 +135,17 @@ def search_expense(expenses):
             print(f"Found: {expense['name']} - {expense['amount']} - {expense.get('category','Uncategorized')}")
             return
 
-    print("Expense not found!")        
+    print("Expense not found!")
 
 def category_summary(expenses):
     if not expenses:
-        print("No expenses found. ")
+        print("No expenses found.")
         return
 
     totals = {}
 
     for expense in expenses:
-        category = expense.get("Category", "uncategorized")
+        category = expense.get("category", "uncategorized")
         amount = expense["amount"]
 
         if category in totals:
@@ -145,10 +153,18 @@ def category_summary(expenses):
         else:
             totals[category] = amount
 
-            print("\nCategory Smmary") 
+    print("\nCategory Summary")
+    print("-----------------------")
+    print(f"{'category':<15}{'Total'}")
+    print("-----------------------")
 
-            for category, total in totals.items():
-                print(f"{category} - {total}")
+    for category, total in totals.items():
+        print(f"{category:<15}{total}")
+
+     
+
+
+
 
 
 

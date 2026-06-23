@@ -1,10 +1,17 @@
 [
     {
         "name": "tea",
-        "amount": 36.0
+        "amount": 55.0,
+        "category": "Food"
     },
     {
-        "name": "coffee",
-        "amount": 40.0
+        "name": "Bi-Cycle",
+        "amount": 15000.0,
+        "category": "Transport"
+    },
+    {
+        "name": "Bubble Tea",
+        "amount": 250.0,
+        "category": "Food"
     }
 ]
